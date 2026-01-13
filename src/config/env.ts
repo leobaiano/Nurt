@@ -22,6 +22,10 @@ const envSchema = z.object({
       (uri) => uri.startsWith('mongodb://') || uri.startsWith('mongodb+srv://'),
       { message: 'MONGO_URI must be a valid MongoDB connection string' }
     ),
+
+    MONGO_DB_NAME: z
+    .string()
+    .default('nurt_dev'),
 });
 
 /**
@@ -46,4 +50,5 @@ export const env = {
   nodeEnv: parsedEnv.data.NODE_ENV,
   port: parsedEnv.data.PORT,
   mongoUri: parsedEnv.data.MONGO_URI,
+  mongoDbName: parsedEnv.data.MONGO_DB_NAME
 } as const;
