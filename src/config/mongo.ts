@@ -50,3 +50,15 @@ export async function disconnectMongo(): Promise<void> {
 
   console.log('🍂 MongoDB disconnected');
 }
+
+export async function ensureIndexes(): Promise<void> {
+  const db = getMongoDb();
+  const collection = db.collection('leads');
+
+  await collection.createIndex(
+    { email: 1 },
+    { unique: true, name: 'unique_email' }
+  );
+
+  console.log('✅ Index ensured: leads.email unique');
+}

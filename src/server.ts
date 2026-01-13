@@ -1,11 +1,14 @@
 import { createApp } from './app';
 import { env } from './config/env';
-import { connectMongo, disconnectMongo } from './config/mongo';
+import { connectMongo, disconnectMongo, ensureIndexes } from './config/mongo';
 
 async function bootstrap() {
   try {
     // 1️⃣ Connect infrastructure
     await connectMongo();
+
+    // Create indices
+    await ensureIndexes();
 
     // 2️⃣ Create HTTP app
     const app = createApp();
