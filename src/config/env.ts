@@ -1,11 +1,49 @@
 import 'dotenv/config';
+import { z } from 'zod';
 
-type Env = {
-    nodeEnv: 'development' | 'production' | 'test';
-    port: number;
-};
+/**
+ * Environment variables schema
+ */
+const envSchema = z.object({
+  NODE_ENV: z
+    .enum(['development', 'test', 'production'])
+    .default('development'),
 
-export const env: Env = {
-    nodeEnv: (process.env.NODE_ENV as Env['nodeEnv']) ?? 'development',
-    port: Number(process.env.PORT ?? 3000),
-};
+  PORT: z
+    .string()
+    .regex(/^\d+$/)
+    .transform(Number)
+    .default(3000),
+
+  MONGO_URI: z
+    .string()
+    .min(1, 'MONGO_URI is required')
+    .refine(
+      (uri) => uri.startsWith('mongodb://') || uri.startsWith('mongodb+srv://'),
+      { message: 'MONGO_URI must be a valid MongoDB connection string' }
+    ),
+});
+
+/**
+ * Parse and validate process.env
+ */
+const parsedEnv = envSchema.safeParse(process.env);
+
+if (!parsedEnv.success) {
+  console.error('❌ Invalid environment variables');
+
+  parsedEnv.error.issues.forEach((issue) => {
+    console.error(`- ${issue.path.join('.')}: ${issue.message}`);
+  });
+
+  throw new Error('Invalid environment configuration');
+}
+
+/**
+ * Typed and validated env object
+ */
+export const env = {
+  nodeEnv: parsedEnv.data.NODE_ENV,
+  port: parsedEnv.data.PORT,
+  mongoUri: parsedEnv.data.MONGO_URI,
+} as const;
