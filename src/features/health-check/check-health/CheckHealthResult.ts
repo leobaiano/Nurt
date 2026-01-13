@@ -1,9 +1,11 @@
 export type CheckHealthResult =
     | {
-        status: 'ok';
-        database: 'up';
-    }
+          status: 'ok';
+          database: 'up';
+          leadsEmailIndex: 'exists';
+      }
     | {
-        status: 'degraded';
-        database: 'down';
-    };
+          status: 'degraded';
+          database: 'up' | 'down';
+          leadsEmailIndex: 'missing';
+      };
