@@ -17,9 +17,10 @@ export async function connectMongo(): Promise<void> {
 
   await client.connect();
 
-  database = client.db();
+  // ✅ FIX: define explicitamente o nome da base
+  database = client.db(env.mongoDbName);
 
-  console.log('🍃 MongoDB connected');
+  console.log(`🍃 MongoDB connected to database: ${env.mongoDbName}`);
 }
 
 /**
