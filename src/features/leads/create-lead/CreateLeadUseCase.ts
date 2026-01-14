@@ -13,11 +13,19 @@ export class CreateLeadUseCase {
 
         if (existingLead) {
             existingLead.addSources(input.source);
+            existingLead.custom = {
+                ...existingLead.custom,
+                ...input.custom,
+            };
+            existingLead.phone = input.phone;
+
+
             await this.repository.update(existingLead);
 
             return {
                 email: existingLead.email,
                 leadId: existingLead.id,
+                phone: existingLead
             };
         }
 
