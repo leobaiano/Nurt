@@ -22,7 +22,7 @@ export class CreateLeadUseCase {
         }
 
         const lead = new Lead({
-            id: new UniqueId().toString(),
+            id: new UniqueId(),
             name: input.name,
             email: input.email,
             phone: input.phone,

@@ -23,4 +23,14 @@ export class Lead {
     this.source = props.source;
     this.custom = props.custom;
   }
+
+  addSources(newSources: string[]) {
+    const uniqueSources = newSources.filter(
+      (s) => !this.source.includes(s)
+    );
+
+    if (uniqueSources.length > 0) {
+      this.source.push(...uniqueSources);
+    }
+  }
 }
