@@ -1,7 +1,8 @@
-import { Collection } from 'mongodb';
 import { CreateLeadRepository } from './CreateLeadRepository';
 import { Lead } from './Lead.entity';
 import { getMongoDb } from '../../../config/mongo';
+import { UniqueId } from '@/shared/domain/UniqueId';
+import { Collection, ObjectId } from 'mongodb';
 
 export class MongoCreateLeadRepository implements CreateLeadRepository {
   private readonly collection: Collection;
@@ -18,7 +19,7 @@ export class MongoCreateLeadRepository implements CreateLeadRepository {
     }
 
     return new Lead({
-      id: doc.id,
+      id: new UniqueId(doc._id.toString()),
       name: doc.name,
       email: doc.email,
       phone: doc.phone,
@@ -29,7 +30,7 @@ export class MongoCreateLeadRepository implements CreateLeadRepository {
 
   async save(lead: Lead): Promise<void> {
     await this.collection.insertOne({
-      id: lead.id,
+      id: lead.id.toString,
       name: lead.name,
       email: lead.email,
       phone: lead.phone,
@@ -40,7 +41,7 @@ export class MongoCreateLeadRepository implements CreateLeadRepository {
 
   async update(lead: Lead): Promise<void> {
     await this.collection.updateOne(
-      { email: lead.email },
+      { _id: new ObjectId(lead.id.toString()) }, 
       {
         $set: {
           source: lead.source,

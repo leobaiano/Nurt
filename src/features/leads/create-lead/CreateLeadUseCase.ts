@@ -1,7 +1,7 @@
-import { CreateLeadDTO } from './CreateLeadDTO';
-import { CreateLeadRepository } from './CreateLeadRepository';
-import { Lead } from './Lead.entity';
-import { UniqueId } from '../../../shared/domain/UniqueId';
+import { CreateLeadDTO } from '@/features/leads/create-lead/CreateLeadDTO';
+import { CreateLeadRepository } from '@/features/leads/create-lead/CreateLeadRepository';
+import { Lead } from '@/features/leads/create-lead/Lead.entity';
+import { UniqueId } from '@/shared/domain/UniqueId';
 
 export class CreateLeadUseCase {
     constructor(

@@ -1,10 +1,10 @@
-import { randomUUID } from 'node:crypto';
+import { ObjectId } from 'mongodb';
 
 export class UniqueId {
     private readonly value: string;
 
     constructor(id?: string) {
-        this.value = id ?? randomUUID();
+        this.value = id ?? new ObjectId().toHexString();
     }
 
     toString(): string {
