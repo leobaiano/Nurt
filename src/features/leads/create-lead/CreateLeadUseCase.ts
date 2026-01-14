@@ -25,7 +25,6 @@ export class CreateLeadUseCase {
             return {
                 email: existingLead.email,
                 leadId: existingLead.id,
-                phone: existingLead
             };
         }
 

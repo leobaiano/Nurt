@@ -46,6 +46,7 @@ export class MongoCreateLeadRepository implements CreateLeadRepository {
         $set: {
           source: lead.source,
           custom: lead.custom,
+          phone: lead.phone
         },
       }
     );
