@@ -30,7 +30,7 @@ export class MongoCreateLeadRepository implements CreateLeadRepository {
 
   async save(lead: Lead): Promise<void> {
     await this.collection.insertOne({
-      id: lead.id.toString,
+      id: lead.id.toString(),
       name: lead.name,
       email: lead.email,
       phone: lead.phone,

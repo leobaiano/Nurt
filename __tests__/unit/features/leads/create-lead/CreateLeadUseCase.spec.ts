@@ -51,16 +51,16 @@ describe('CreateLeadUseCase', () => {
 
   it('should not duplicate sources when updating an existing lead', async () => {
     await useCase.execute(validCreateLeadInput);
-  
+
     await useCase.execute({
       ...validCreateLeadInput,
       source: ['google'],
     });
-  
+
     const lead = repository.getAll()[0];
-  
+
     expect(lead.source).toEqual(expect.arrayContaining(['google', 'instagram']));
-  
+
     const uniqueSources = Array.from(new Set(lead.source));
     expect(lead.source).toHaveLength(uniqueSources.length);
   });
@@ -77,4 +77,53 @@ describe('CreateLeadUseCase', () => {
 
     expect(lead.custom).toBeUndefined();
   });
+
+  it('should update phone when lead already exists', async () => {
+    await useCase.execute(validCreateLeadInput);
+
+    const updatedInput = {
+      ...validCreateLeadInput,
+      phone: '+55 11 98888-7777',
+    };
+
+    await useCase.execute(updatedInput);
+
+    const lead = repository.getAll()[0];
+
+    expect(lead.phone).toBe(updatedInput.phone);
+  });
+
+  it('should merge custom data instead of replacing it', async () => {
+    await useCase.execute(validCreateLeadInput);
+
+    await useCase.execute({
+      ...validCreateLeadInput,
+      custom: {
+        utm_campaign: 'black-friday',
+      },
+    });
+
+    const lead = repository.getAll()[0];
+
+    expect(lead.custom).toEqual({
+      age: 30,
+      gender: 'male',
+      utm_campaign: 'black-friday',
+    });
+  });
+
+  it('should keep existing custom data if input.custom is undefined', async () => {
+    await useCase.execute(validCreateLeadInput);
+  
+    await useCase.execute({
+      ...validCreateLeadInput,
+      custom: undefined,
+      source: ['facebook'],
+    });
+  
+    const lead = repository.getAll()[0];
+  
+    expect(lead.custom).toEqual(validCreateLeadInput.custom);
+  });
+  
 });
