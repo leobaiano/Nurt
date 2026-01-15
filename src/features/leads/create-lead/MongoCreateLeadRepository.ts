@@ -1,8 +1,7 @@
+import { Collection, ObjectId } from 'mongodb';
 import { CreateLeadRepository } from './CreateLeadRepository';
 import { Lead } from './Lead.entity';
 import { getMongoDb } from '../../../config/mongo';
-import { UniqueId } from '@/shared/domain/UniqueId';
-import { Collection, ObjectId } from 'mongodb';
 
 export class MongoCreateLeadRepository implements CreateLeadRepository {
   private readonly collection: Collection;
@@ -19,7 +18,7 @@ export class MongoCreateLeadRepository implements CreateLeadRepository {
     }
 
     return new Lead({
-      id: new UniqueId(doc._id.toString()),
+      id: doc._id.toString(),
       name: doc.name,
       email: doc.email,
       phone: doc.phone,
@@ -29,24 +28,29 @@ export class MongoCreateLeadRepository implements CreateLeadRepository {
   }
 
   async save(lead: Lead): Promise<void> {
-    await this.collection.insertOne({
-      id: lead.id.toString(),
+    const result = await this.collection.insertOne({
       name: lead.name,
       email: lead.email,
       phone: lead.phone,
       source: lead.source,
       custom: lead.custom,
     });
+
+    lead.id = result.insertedId.toString();
   }
 
   async update(lead: Lead): Promise<void> {
+    if (!lead.id) {
+      throw new Error('Cannot update lead without id');
+    }
+
     await this.collection.updateOne(
-      { _id: new ObjectId(lead.id.toString()) }, 
+      { _id: new ObjectId(lead.id) },
       {
         $set: {
           source: lead.source,
           custom: lead.custom,
-          phone: lead.phone
+          phone: lead.phone,
         },
       }
     );

@@ -1,7 +1,5 @@
-import { UniqueId } from '@/shared/domain/UniqueId';
-
 export class Lead {
-  public readonly id: UniqueId;
+  public id?: string;
   public name: string;
   public email: string;
   public phone: string;
@@ -9,14 +7,14 @@ export class Lead {
   public custom?: Record<string, unknown>;
 
   constructor(props: {
-    id?: UniqueId;
+    id?: string;
     name: string;
     email: string;
     phone: string;
     source: string[];
     custom?: Record<string, unknown>;
   }) {
-    this.id = props.id ?? new UniqueId();
+    this.id = props.id;
     this.name = props.name;
     this.email = props.email;
     this.phone = props.phone;
