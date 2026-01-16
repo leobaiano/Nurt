@@ -12,7 +12,8 @@
     "test": "vitest run --coverage",
     "test:watch": "vitest --watch __tests__/unit",
     "test:unit": "vitest run __tests__/unit --coverage",
-    "test:integration": "vitest run __tests__/integration --coverage"
+    "test:integration": "vitest run __tests__/integration --coverage",
+    "create:feature": "./scripts/create-feature.sh"
   },
   "keywords": [],
   "author": "",
