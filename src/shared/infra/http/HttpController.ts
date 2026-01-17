@@ -3,20 +3,21 @@ import { HttpResponseBuilder } from './HttpResponse';
 
 type FeatureResult =
     | { type: 'success'; data: unknown }
+    | { type: 'not_found' }
     | {
-          type: 'validation_error';
-          code: string;
-          message: string;
-          fields?: {
-              property: string;
-              message: string;
-          }[];
-      }
+        type: 'validation_error';
+        code: string;
+        message: string;
+        fields?: {
+            property: string;
+            message: string;
+        }[];
+    }
     | {
-          type: 'business_error';
-          code: string;
-          message: string;
-      };
+        type: 'business_error';
+        code: string;
+        message: string;
+    };
 
 export class HttpController {
     async handle(
@@ -31,19 +32,24 @@ export class HttpController {
                         statusCode: 200,
                         body: HttpResponseBuilder.success(result.data),
                     };
+                case 'not_found':
+                    return {
+                        statusCode: 404,
+                        body: undefined,
+                    };
 
-                    case 'validation_error':
-                      return {
-                          statusCode: 400,
-                          body: HttpResponseBuilder.error(
-                              result.code,
-                              result.message,
-                              result.fields?.map((field) => ({
-                                  field: field.property,
-                                  message: field.message,
-                              }))
-                          ),
-                      };
+                case 'validation_error':
+                    return {
+                        statusCode: 400,
+                        body: HttpResponseBuilder.error(
+                            result.code,
+                            result.message,
+                            result.fields?.map((field) => ({
+                                field: field.property,
+                                message: field.message,
+                            }))
+                        ),
+                    };
 
                 case 'business_error':
                     return {

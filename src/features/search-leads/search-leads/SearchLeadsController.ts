@@ -6,13 +6,19 @@ export class SearchLeadsController {
   constructor(
     private readonly http: HttpController,
     private readonly useCase: SearchLeadsUseCase
-  ) {}
+  ) { }
 
   async handle(query: unknown) {
     return this.http.handle(async () => {
       const filters = query as SearchLeadDTO;
 
       const result = await this.useCase.execute(filters);
+
+      if (!result) {
+        return {
+          type: 'not_found',
+        };
+      }
 
       return {
         type: 'success',
