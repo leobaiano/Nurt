@@ -1,6 +1,6 @@
 // src/shared/infra/http/routes/searchLeads.routes.ts
 import { Router } from 'express';
-import { searchLeadsFeature } from '../../../../features/leads/search-leads/search-leads';
+import { searchLeadsFeature } from '../../../../features/leads//search-leads';
 
 const router = Router();
 

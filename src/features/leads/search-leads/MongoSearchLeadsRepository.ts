@@ -1,5 +1,5 @@
 import { Collection, ObjectId } from 'mongodb';
-import { getMongoDb } from '../../../../config/mongo';
+import { getMongoDb } from '../../../config/mongo';
 import { SearchLeadRepository } from './SearchLeadsRepository';
 import { SearchLeadDTO } from './SearchLeadsDTO';
 import { SearchLead } from './SearchLeads.entity';
