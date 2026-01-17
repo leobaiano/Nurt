@@ -214,42 +214,9 @@ Its primary goal is to serve as a clean, evolvable foundation for a lightweight 
 
 ## 🤝 Contributing
 
-Contributions are welcome!  
-You can contribute to the project on our GitHub repository:
-https://github.com/leobaiano/nurt
+Contributions are welcome!
 
-### How to contribute
-
-1. Fork the repository  
-https://help.github.com/articles/fork-a-repo/
-
-2. Configure your fork locally  
-https://help.github.com/articles/configuring-a-remote-for-a-fork/
-
-3. Check the open issues and choose one that is not currently being worked on:  
-https://github.com/leobaiano/nurt/issues
-
-4. Create a new branch for your work:
-```bash
-git checkout -b issue-17
-```
-
-5. Make your changes following the project conventions:
-- Feature-based organization (Vertical Slice Architecture)
-- Clear separation between domain and infrastructure
-- Small, focused commits
-
-6. Commit your changes using a clear and meaningful message:
-```bash
-git commit -m "feat(leads): add search by custom fields"
-```
-
-7. Push your branch to your fork:
-```bash
-git push origin issue-17
-```
-
-8. Open a Pull Request:
+Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) file to learn how to contribute to this project.
 https://help.github.com/articles/creating-a-pull-request/
 
 ---
