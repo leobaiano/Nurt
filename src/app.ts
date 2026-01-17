@@ -1,12 +1,22 @@
 import express from 'express';
 import { routes } from './shared/infra/http/routes';
+import { apiSecurity } from './shared/infra/http/middlewares/apiSecurity';
 
 export function createApp() {
-    const app = express();
+  const app = express();
 
-    app.use(express.json());
+  app.use(express.json());
 
-    app.use(routes);
+  /**
+   * 🔓 Public routes (no auth)
+   */
+  app.get('/health', routes);
 
-    return app;
+  /**
+   * 🔐 Protected routes
+   */
+  app.use(apiSecurity);
+  app.use(routes);
+
+  return app;
 }

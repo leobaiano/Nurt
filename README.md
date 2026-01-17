@@ -68,6 +68,12 @@ src/
 
 ---
 
+## 🔐 API Security (CORS + API Key)
+
+This project applies explicit API security controls to prevent unauthorized access in production environments.
+
+More details in [SECURITY](./SECURITY.md).
+
 ## 🚀 Running the project locally
 
 ### Prerequisites

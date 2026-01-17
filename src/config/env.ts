@@ -19,13 +19,25 @@ const envSchema = z.object({
     .string()
     .min(1, 'MONGO_URI is required')
     .refine(
-      (uri) => uri.startsWith('mongodb://') || uri.startsWith('mongodb+srv://'),
+      (uri) =>
+        uri.startsWith('mongodb://') || uri.startsWith('mongodb+srv://'),
       { message: 'MONGO_URI must be a valid MongoDB connection string' }
     ),
 
-    MONGO_DB_NAME: z
+  MONGO_DB_NAME: z
     .string()
     .default('nurt_dev'),
+
+  /**
+   * 🔐 Security
+   */
+  API_TOKEN: z
+    .string()
+    .min(1, 'API_TOKEN is required'),
+
+  ALLOWED_ORIGINS: z
+    .string()
+    .optional(),
 });
 
 /**
@@ -50,5 +62,8 @@ export const env = {
   nodeEnv: parsedEnv.data.NODE_ENV,
   port: parsedEnv.data.PORT,
   mongoUri: parsedEnv.data.MONGO_URI,
-  mongoDbName: parsedEnv.data.MONGO_DB_NAME
+  mongoDbName: parsedEnv.data.MONGO_DB_NAME,
+
+  apiToken: parsedEnv.data.API_TOKEN,
+  allowedOrigins: parsedEnv.data.ALLOWED_ORIGINS,
 } as const;
