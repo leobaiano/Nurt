@@ -1,4 +1,4 @@
-import { HttpController } from '../../../shared/infra/http/HttpController';
+import { HttpController } from '../../../../shared/infra/http/HttpController';
 import { SearchLeadsController } from './SearchLeadsController';
 import { SearchLeadsUseCase } from './SearchLeadsUseCase';
 import { MongoSearchLeadRepository } from './MongoSearchLeadsRepository';

@@ -1,4 +1,4 @@
-import { HttpController } from '../../../shared/infra/http/HttpController';
+import { HttpController } from '../../../../shared/infra/http/HttpController';
 import { SearchLeadsUseCase } from './SearchLeadsUseCase';
 import { SearchLeadDTO } from './SearchLeadsDTO';
 
