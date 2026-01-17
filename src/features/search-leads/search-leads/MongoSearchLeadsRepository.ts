@@ -9,24 +9,23 @@ export class MongoSearchLeadRepository implements SearchLeadRepository {
 
   constructor() {
     this.collection = getMongoDb().collection('leads');
-
-    console.log("called mongo repository");
+    console.log('called mongo repository');
   }
 
   async search(filters: SearchLeadDTO): Promise<SearchLead[]> {
     const query: Record<string, unknown> = {};
 
-    console.log(filters);
-    console.log(filters.custom);
-
+    // 🔹 ID
     if (filters.id) {
       query._id = new ObjectId(filters.id);
     }
 
+    // 🔹 Email
     if (filters.email) {
       query.email = filters.email.toLowerCase();
     }
 
+    // 🔹 Source (array)
     if (filters.source) {
       query.source = {
         $regex: `^${filters.source}$`,
@@ -34,10 +33,11 @@ export class MongoSearchLeadRepository implements SearchLeadRepository {
       };
     }
 
+    // 🔹 Custom dynamic fields (custom.*)
     Object.entries(filters).forEach(([key, value]) => {
       if (key.startsWith('custom.') && typeof value === 'string') {
         query[key] = {
-          $regex: value,
+          $regex: `^${value}$`,
           $options: 'i',
         };
       }

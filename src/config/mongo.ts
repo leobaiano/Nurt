@@ -17,8 +17,7 @@ export async function connectMongo(): Promise<void> {
 
   await client.connect();
 
-  // ✅ FIX: define explicitamente o nome da base
-  database = client.db(env.mongoDbName);
+    database = client.db(env.mongoDbName);
 
   console.log(`🍃 MongoDB connected to database: ${env.mongoDbName}`);
 }
@@ -51,14 +50,30 @@ export async function disconnectMongo(): Promise<void> {
   console.log('🍂 MongoDB disconnected');
 }
 
+/**
+ * Ensures required indexes for leads collection
+ */
 export async function ensureIndexes(): Promise<void> {
   const db = getMongoDb();
   const collection = db.collection('leads');
 
+  // Unique email
   await collection.createIndex(
     { email: 1 },
     { unique: true, name: 'unique_email' }
   );
 
-  console.log('✅ Index ensured: leads.email unique');
+  // Source (array / multikey)
+  await collection.createIndex(
+    { source: 1 },
+    { name: 'idx_source' }
+  );
+
+  // Wildcard to any field within custom
+  await collection.createIndex(
+    { 'custom.$**': 1 },
+    { name: 'idx_custom_wildcard' }
+  );
+
+  console.log('✅ Indexes ensured: unique_email, idx_source, idx_custom_wildcard');
 }
