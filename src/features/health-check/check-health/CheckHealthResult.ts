@@ -1,11 +1,5 @@
-export type CheckHealthResult =
-    | {
-          status: 'ok';
-          database: 'up';
-          leadsEmailIndex: 'exists';
-      }
-    | {
-          status: 'degraded';
-          database: 'up' | 'down';
-          leadsEmailIndex: 'missing';
-      };
+export interface CheckHealthResult {
+    status: 'ok' | 'degraded';
+    database: 'up';
+    indexes: 'ok' | 'missing';
+  }
