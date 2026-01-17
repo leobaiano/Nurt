@@ -34,15 +34,14 @@ export class MongoSearchLeadRepository implements SearchLeadRepository {
       };
     }
 
-        console.log('IF');
-        Object.entries(filters).forEach(([key, value]) => {
-            if (key.startsWith('custom.') && typeof value === 'string') {
-              query[key] = {
-                $regex: value,
-                $options: 'i',
-              };
-            }
-          });
+    Object.entries(filters).forEach(([key, value]) => {
+      if (key.startsWith('custom.') && typeof value === 'string') {
+        query[key] = {
+          $regex: value,
+          $options: 'i',
+        };
+      }
+    });
 
     const docs = await this.collection.find(query).toArray();
 
