@@ -1,12 +1,13 @@
 import { Router } from 'express';
-import { controller } from '../../../../features/email/send-email';
+import { searchLeadsFeature } from '../../../../features/leads//search-leads';
 
 const router = Router();
 
-router.get('/send-email', async (req, res) => {
-  const response = await controller.handle(req.query, req.body);
+router.get('/leads/search', async (req, res) => {
+  const controller = searchLeadsFeature();
+  const response = await controller.handle(req.query);
 
-  return res.status(response.statusCode).json(response.body);
+  res.status(response.statusCode).json(response.body);
 });
 
-export { router as sendEmailRoutes };
+export { router as searchLeadsRoutes };
