@@ -24,7 +24,7 @@ export class SendEmailController {
   constructor(
     private readonly http: HttpController,
     private readonly useCase: SendEmailUseCase
-  ) {}
+  ) { }
 
   async handle(query: unknown, body: unknown) {
     return this.http.handle(async () => {
@@ -51,7 +51,9 @@ export class SendEmailController {
 
       return {
         type: 'success',
-        data: null,
+        data: {
+          message: 'Send email successfully',
+        },
       };
     });
   }
