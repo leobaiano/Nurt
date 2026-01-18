@@ -6,7 +6,7 @@ Nurt is a mini CRM focused on lead capture and nurturing, built with Node.js + T
 
 ## 📄 License
 
-This project is open source and licensed under the [MIT License](LICENSE.txt).
+This project is open source and licensed under the MIT License (LICENSE.txt).
 
 You are free to use, modify, and distribute this software, provided that the original copyright and license notice are included.
 
@@ -30,22 +30,19 @@ The project follows Vertical Slice Architecture, organizing the code by features
 
 Project structure example:
 
-```text
 src/
-├── features/
-│   └── leads/
-│       ├── create-lead/
-│       └── search-leads/
-│
-├── shared/
-│   ├── domain/
-│   └── infra/
-│
-├── config/
-│
-├── app.ts
-└── server.ts
-```
+  features/
+    leads/
+      create-lead/
+      search-leads/
+    email/
+      send-email/
+  shared/
+    domain/
+    infra/
+  config/
+  app.ts
+  server.ts
 
 ### Why Vertical Slice?
 
@@ -72,7 +69,36 @@ src/
 
 This project applies explicit API security controls to prevent unauthorized access in production environments.
 
-More details in [SECURITY](./SECURITY.md).
+Requests are validated using:
+- Allowed Origin validation
+- API Key (x-api-key header)
+
+More details can be found in the SECURITY.md documentation.
+
+---
+
+## ✉️ Email Sending (Send Email Feature)
+
+Nurt provides a Send Email feature designed to support lead nurturing and transactional communication.
+
+This feature allows clients to trigger email delivery by specifying:
+- Destination email address
+- Template identifier
+- Optional template variables
+
+### Email Provider Strategy
+
+- In development environments, a Fake Email Provider is used.
+  - No real emails are sent
+  - Useful for local development and automated testing
+
+- In production, the project is configured to use Resend as the email provider.
+
+The email feature is provider-agnostic by design, allowing other email services to be integrated in the future without impacting business logic.
+
+Detailed provider configuration and implementation specifics are intentionally not covered in this README and are documented separately.
+
+---
 
 ## 🚀 Running the project locally
 
@@ -94,7 +120,7 @@ npm install
 
 cp .env.example .env
 
-⚠️ The .env file must not be committed.
+WARNING: The .env file must not be committed.
 
 ### Run in development mode
 
@@ -113,28 +139,28 @@ http://localhost:3000
 
 ## 📦 Available scripts
 
-`npm run start:dev`  
+npm run start:dev
 Development with hot reload
 
-`npm run build`  
+npm run build
 Compile the project to /dist
 
-`npm start`  
+npm start
 Run the compiled application
 
-`npm run start:local`  
+npm run start:local
 Build + start (local production)
 
-`npm run test`  
+npm run test
 Run all tests with coverage
 
-`npm run test:unit`  
+npm run test:unit
 Run unit tests only
 
-`npm run test:integration`  
+npm run test:integration
 Run integration tests
 
-`npm run create:feature`  
+npm run create:feature
 Scaffold a new feature using the project conventions
 
 ---
@@ -146,8 +172,7 @@ The architecture supports fast and isolated unit testing, focusing on business r
 Tests are written using Vitest.
 
 To run unit tests:
-
-`npm run test:unit`
+npm run test:unit
 
 Integration tests are also supported for infrastructure validation.
 
@@ -160,7 +185,6 @@ The project exposes a health endpoint:
 GET /health
 
 This endpoint verifies:
-
 - Database connectivity
 - Presence of required MongoDB indexes
 
@@ -181,10 +205,10 @@ Health checks validate their existence to ensure query performance and data inte
 ## 🌍 Environments
 
 Development:
-Uses .env
+- Uses .env
 
 Production:
-Environment variables are injected by infrastructure (Railway, Docker, VPS, CI/CD)
+- Environment variables are injected by infrastructure (Railway, Docker, VPS, CI/CD)
 
 The project does not rely on .env files in production.
 
@@ -204,9 +228,10 @@ The project does not rely on .env files in production.
 
 ## 📡 Endpoints
 
-GET /health  
-GET /leads/search  
+GET  /health  
+GET  /leads/search  
 POST /leads  
+POST /send-email
 
 ---
 
@@ -220,18 +245,12 @@ Its primary goal is to serve as a clean, evolvable foundation for a lightweight 
 
 ## 🤝 Contributing
 
-Contributions are welcome!
+Contributions are welcome.
 
-Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) file to learn how to contribute to this project.
-https://help.github.com/articles/creating-a-pull-request/
+Please read the CONTRIBUTING.md file to learn how to contribute to this project.
 
----
+If you want to work on something that is not listed in the issues, please create an issue first to avoid duplicated work.
 
-### Important notes
-
-- If you want to work on something that is not listed in the issues, please create an issue first to avoid duplicated work.
-- Keep Pull Requests small and focused whenever possible.
-- Feel free to ask questions or request feedback in the issue or PR discussion.
+Keep Pull Requests small and focused whenever possible.
 
 Thanks for contributing and helping Nurt grow 🌱
-
