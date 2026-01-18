@@ -1,14 +1,12 @@
-// src/shared/infra/http/routes/searchLeads.routes.ts
 import { Router } from 'express';
-import { searchLeadsFeature } from '../../../../features/leads//search-leads';
+import { controller } from '../../../../features/email/send-email';
 
 const router = Router();
 
-router.get('/leads/search', async (req, res) => {
-  const controller = searchLeadsFeature();
-  const response = await controller.handle(req.query);
+router.get('/send-email', async (req, res) => {
+  const response = await controller.handle(req.query, req.body);
 
-  res.status(response.statusCode).json(response.body);
+  return res.status(response.statusCode).json(response.body);
 });
 
-export { router as searchLeadsRoutes };
+export { router as sendEmailRoutes };
