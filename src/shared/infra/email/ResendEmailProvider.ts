@@ -1,30 +1,37 @@
 import { Resend } from 'resend';
-import { EmailProvider, SendEmailParams, SendEmailResult } from '../../../shared/domain/email/EmailProvider';
 import { env } from '../../../config/env';
 
+export interface SendEmailPayload {
+  to: string;
+  template: string;
+  variables?: Record<string, string | number>;
+}
+
+export interface EmailProvider {
+  send(payload: SendEmailPayload): Promise<void>;
+}
+
 export class ResendEmailProvider implements EmailProvider {
-    private client: Resend;
+  private readonly client: Resend;
 
-    constructor() {
-        this.client = new Resend(env.resendApiKey);
+  constructor() {
+    this.client = new Resend(env.resendApiKey);
+  }
+
+  async send({ to, template, variables }: SendEmailPayload): Promise<void> {
+    const { error } = await this.client.emails.send({
+      from: env.emailFrom,
+      to,
+      template: {
+        id: template,
+        variables,
+      },
+    });
+
+    if (error) {
+      throw new Error(
+        `Resend error: ${error.message ?? 'Unknown email provider error'}`
+      );
     }
-
-    async send(params: SendEmailParams): Promise<SendEmailResult> {
-        const { to, template, variables } = params;
-
-        const response = await this.client.emails.send({
-            to,
-            from: env.emailFrom,
-            template_id: template,
-            dynamic_template_data: variables,
-        });
-
-        if (!response.data?.id) {
-            throw new Error('Failed to send email');
-        }
-
-        return {
-            messageId: response.data.id,
-        };
-    }
+  }
 }

@@ -1,12 +1,24 @@
-import { z } from 'zod';
 import { HttpController } from '../../../shared/infra/http/HttpController';
 import { SendEmailUseCase } from './SendEmailUseCase';
-import { SendEmailDTO } from './SendEmailDTO';
+import { SendEmailEntity } from './SendEmail.entity';
 
-const querySchema = z.object({
-  to: z.string().email(),
-  template: z.string().min(1),
-});
+function parseTemplateVariables(
+  input: unknown
+): Record<string, string | number> | undefined {
+  if (!input || typeof input !== 'object') {
+    return undefined;
+  }
+
+  const variables: Record<string, string | number> = {};
+
+  for (const [key, value] of Object.entries(input)) {
+    if (typeof value === 'string' || typeof value === 'number') {
+      variables[key] = value;
+    }
+  }
+
+  return Object.keys(variables).length > 0 ? variables : undefined;
+}
 
 export class SendEmailController {
   constructor(
@@ -16,32 +28,30 @@ export class SendEmailController {
 
   async handle(query: unknown, body: unknown) {
     return this.http.handle(async () => {
-      const parsedQuery = querySchema.safeParse(query);
+      const parsedQuery = query as {
+        to?: string;
+        template?: string;
+      };
 
-      if (!parsedQuery.success) {
+      if (!parsedQuery.to || !parsedQuery.template) {
         return {
           type: 'validation_error',
-          code: 'INVALID_QUERY_PARAMS',
-          message: 'Invalid query parameters',
-          fields: parsedQuery.error.issues.map(issue => ({
-            property: issue.path.join('.'),
-            message: issue.message,
-          })),
+          code: 'INVALID_REQUEST',
+          message: 'to and template are required',
         };
       }
 
-      const data: SendEmailDTO = {
-        to: parsedQuery.data.to,
-        template: parsedQuery.data.template,
-        variables:
-          typeof body === 'object' && body !== null ? body : undefined,
+      const data: SendEmailEntity = {
+        to: parsedQuery.to,
+        template: parsedQuery.template,
+        variables: parseTemplateVariables(body),
       };
 
-      const result = await this.useCase.execute(data);
+      await this.useCase.execute(data);
 
       return {
         type: 'success',
-        data: result,
+        data: null,
       };
     });
   }
