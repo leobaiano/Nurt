@@ -1,6 +1,6 @@
 # Contributing to Nurt 🌱
 
-Thanks for your interest in contributing to **Nurt**!  
+Thanks for your interest in contributing to Nurt!
 Contributions of any kind are welcome — code, documentation, ideas, or bug reports.
 
 Repository:
@@ -25,15 +25,13 @@ https://help.github.com/articles/configuring-a-remote-for-a-fork/
 Check the list of open issues and pick one that is not currently assigned:
 https://github.com/leobaiano/nurt/issues
 
-If what you want to work on is not listed, please **open a new issue first** to avoid duplicated efforts.
+If what you want to work on is not listed, please open a new issue first to avoid duplicated efforts.
 
 ### 4. Create a branch
 
 Create a branch based on the issue you are working on:
 
-```bash
-git checkout -b issue-17
-```
+    git checkout -b issue-17
 
 ### 5. Make your changes
 
@@ -44,55 +42,54 @@ Please follow the project conventions:
 - No direct dependency between features and external services
 - Small, focused commits
 
+#### Code style & formatting
+
+This project uses EditorConfig to maintain consistent formatting across editors and operating systems.
+
+- An .editorconfig file is provided at the project root
+- Most modern editors support EditorConfig out of the box
+- Make sure EditorConfig support is enabled in your editor before contributing
+
+EditorConfig helps ensure consistent indentation, line endings, and whitespace rules across all contributions.
+
+More information:
+https://editorconfig.org/
+
 ### 6. Commit your changes
 
-This project **requires the use of Conventional Commits** to keep commit history clear, consistent, and easy to automate.
+This project requires the use of Conventional Commits to keep commit history clear, consistent, and easy to automate.
 
-Please follow the Conventional Commits specification:
+Conventional Commits specification:
 https://www.conventionalcommits.org/en/v1.0.0/
 
 #### Commit message format
 
-```text
-<type>(optional scope): <description>
-```
+    <type>(optional scope): <description>
 
 #### Common types used in this project
 
-- `feat`: A new feature
-- `fix`: A bug fix
-- `refactor`: Code refactoring without behavior change
-- `test`: Adding or updating tests
-- `docs`: Documentation changes only
-- `chore`: Maintenance tasks (configs, scripts, tooling)
+- feat: A new feature
+- fix: A bug fix
+- refactor: Code refactoring without behavior change
+- test: Adding or updating tests
+- docs: Documentation changes only
+- chore: Maintenance tasks (configs, scripts, tooling)
 
 #### Examples
 
-```bash
-git commit -m "feat: add search by custom fields"
-```
-
-```bash
-git commit -m "fix: validate wildcard index correctly"
-```
-
-```bash
-git commit -m "test: add unit tests for empty result scenario"
-```
+    git commit -m "feat: add search by custom fields"
+    git commit -m "fix: validate wildcard index correctly"
+    git commit -m "test: add unit tests for empty result scenario"
 
 Commits that do not follow this convention may be requested to be updated during code review.
 
-```
-
 ### 7. Push to your fork
 
-```bash
-git push origin issue-17
-```
+    git push origin issue-17
 
 ### 8. Open a Pull Request
 
-Create a Pull Request from your branch to `main`:
+Create a Pull Request from your branch to main:
 https://help.github.com/articles/creating-a-pull-request/
 
 ---
@@ -101,10 +98,10 @@ https://help.github.com/articles/creating-a-pull-request/
 
 - Keep Pull Requests small and focused.
 - If applicable, add or update unit tests.
-- Describe clearly **what** and **why** you changed something.
+- Describe clearly what and why you changed something.
 - Feel free to ask questions in the issue or Pull Request discussion.
 
 ---
 
-Thanks for helping Nurt grow 🌱  
+Thanks for helping Nurt grow 🌱
 Your contribution makes this project better for everyone.
