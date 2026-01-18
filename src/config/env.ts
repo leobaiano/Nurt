@@ -38,6 +38,14 @@ const envSchema = z.object({
   ALLOWED_ORIGINS: z
     .string()
     .optional(),
+
+  RESEND_API_KEY: z
+    .string()
+    .min(1),
+
+  EMAIL_FROM: z
+    .string()
+    .email(),
 });
 
 /**
@@ -63,7 +71,8 @@ export const env = {
   port: parsedEnv.data.PORT,
   mongoUri: parsedEnv.data.MONGO_URI,
   mongoDbName: parsedEnv.data.MONGO_DB_NAME,
-
   apiToken: parsedEnv.data.API_TOKEN,
   allowedOrigins: parsedEnv.data.ALLOWED_ORIGINS,
+  resendApiKey: parsedEnv.data.RESEND_API_KEY,
+  emailFrom: parsedEnv.data.EMAIL_FROM,
 } as const;
