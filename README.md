@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/nurt.png" alt="Nurt logo" width="300" />
+</p>
+
 # Nurt 🌱
 
 Nurt is a mini CRM focused on lead capture and nurturing, built with Node.js + TypeScript, following Vertical Slice Architecture and strong decoupling principles to support evolution, testing, and infrastructure changes.
