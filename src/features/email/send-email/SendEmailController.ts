@@ -5,7 +5,7 @@ import { SendEmailEntity } from './SendEmail.entity';
 function parseTemplateVariables(
   input: unknown
 ): Record<string, string | number> | undefined {
-  if (!input || typeof input !== 'object') {
+  if (!input || typeof input !== 'object' || input === null) {
     return undefined;
   }
 
@@ -26,25 +26,27 @@ export class SendEmailController {
     private readonly useCase: SendEmailUseCase
   ) { }
 
-  async handle(query: unknown, body: unknown) {
+  async handle(_query: unknown, body: unknown) {
     return this.http.handle(async () => {
-      const parsedQuery = query as {
+      // Tipagem do body esperado [NOVA LINHA]
+      const payload = body as {
         to?: string;
         template?: string;
+        variables?: unknown;
       };
 
-      if (!parsedQuery.to || !parsedQuery.template) {
+      if (!payload.to || !payload.template) {
         return {
           type: 'validation_error',
           code: 'INVALID_REQUEST',
-          message: 'to and template are required',
+          message: 'to and template are required in the request body',
         };
       }
 
       const data: SendEmailEntity = {
-        to: parsedQuery.to,
-        template: parsedQuery.template,
-        variables: parseTemplateVariables(body),
+        to: payload.to,
+        template: payload.template,
+        variables: parseTemplateVariables(payload.variables),
       };
 
       await this.useCase.execute(data);
@@ -52,7 +54,7 @@ export class SendEmailController {
       return {
         type: 'success',
         data: {
-          message: 'Send email successfully',
+          message: 'Email sent successfully',
         },
       };
     });
