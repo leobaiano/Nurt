@@ -4,6 +4,9 @@
   "description": "CRM project for small businesses",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
     "build": "tsc",
