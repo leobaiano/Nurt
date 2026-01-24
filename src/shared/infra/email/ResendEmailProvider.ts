@@ -1,16 +1,6 @@
 import { Resend } from 'resend';
 import { env } from '../../../config/env';
-
-export interface SendEmailPayload {
-  to: string;
-  template: string;
-  variables?: Record<string, string | number>;
-}
-
-export interface EmailProvider {
-  send(payload: SendEmailPayload): Promise<void>;
-}
-
+import { EmailProvider, SendEmailParams } from '../../domain/email/EmailProvider';
 export class ResendEmailProvider implements EmailProvider {
   private readonly client: Resend;
 
@@ -18,7 +8,7 @@ export class ResendEmailProvider implements EmailProvider {
     this.client = new Resend(env.resendApiKey);
   }
 
-  async send({ to, template, variables }: SendEmailPayload): Promise<void> {
+  async send({ to, template, variables }: SendEmailParams): Promise<void> {
     const { error } = await this.client.emails.send({
       from: env.emailFrom,
       to,
