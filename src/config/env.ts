@@ -46,6 +46,8 @@ const envSchema = z.object({
   EMAIL_FROM: z
     .string()
     .email(),
+
+  EMAIL_PROVIDER: z.enum(['resend', 'fake']).default('fake'),
 });
 
 /**
@@ -75,4 +77,5 @@ export const env = {
   allowedOrigins: parsedEnv.data.ALLOWED_ORIGINS,
   resendApiKey: parsedEnv.data.RESEND_API_KEY,
   emailFrom: parsedEnv.data.EMAIL_FROM,
+  emailProvider: parsedEnv.data.EMAIL_PROVIDER,
 } as const;
