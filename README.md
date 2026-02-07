@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/nurt.png" alt="Nurt logo" width="300" />
+  <img src="images/nurt.png" alt="Nurt logo" width="100" />
 </p>
 
 # Nurt 🌱
