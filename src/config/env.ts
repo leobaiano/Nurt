@@ -39,6 +39,15 @@ const envSchema = z.object({
     .string()
     .optional(),
 
+  AUTH_STRATEGY: z.enum(['api-token', 'jwt']).default('api-token'),
+  JWT_SECRET: z.string().min(10),
+  JWT_EXPIRES_IN: z.string().default('1h'),
+  CLIENT_ID: z.string().default('nurt_client'),
+  CLIENT_SECRET: z.string().default('nurt_secret_key'),
+
+  /**
+   * 🔐 Send Email
+   */
   RESEND_API_KEY: z
     .string()
     .min(1),
@@ -78,4 +87,9 @@ export const env = {
   resendApiKey: parsedEnv.data.RESEND_API_KEY,
   emailFrom: parsedEnv.data.EMAIL_FROM,
   emailProvider: parsedEnv.data.EMAIL_PROVIDER,
+  authStrategy: parsedEnv.data.AUTH_STRATEGY,
+  jwtSecret: parsedEnv.data.JWT_SECRET,
+  jwtExpiresIn: parsedEnv.data.JWT_EXPIRES_IN,
+  clientId: parsedEnv.data.CLIENT_ID,
+  clientSecret: parsedEnv.data.CLIENT_SECRET
 } as const;

@@ -1,38 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
-import { securityConfig } from '../../../../config/security';
+import { createAuthStrategy } from '@/shared/infra/auth/AuthStrategyFactory';
+import { HttpResponseBuilder } from '@/shared/infra/http/HttpResponse';
 
-export function apiSecurity(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  /**
-   * 1️⃣ API KEY VALIDATION
-   */
-  const apiKey = req.header('x-api-key');
+export async function apiSecurity(req: Request, res: Response, next: NextFunction) {
+  const strategy = createAuthStrategy();
+  const isAuthorized = await strategy.verify(req.headers);
 
-  if (!apiKey || apiKey !== securityConfig.apiKey) {
-    return res.status(401).json({
-      error: 'UNAUTHORIZED',
-      message: 'Invalid or missing API key',
-    });
+  if (!isAuthorized) {
+    return res.status(401).json(
+      HttpResponseBuilder.error('UNAUTHORIZED', 'Invalid or missing authentication credentials')
+    );
   }
 
-  /**
-   * 2️⃣ ORIGIN VALIDATION (only when present)
-   */
-  const origin = req.headers.origin;
-
-  if (origin) {
-    const isAllowed = securityConfig.allowedOrigins.includes(origin);
-
-    if (!isAllowed) {
-      return res.status(403).json({
-        error: 'FORBIDDEN',
-        message: 'Origin not allowed',
-      });
-    }
-  }
-
-  return next();
+  next();
 }
