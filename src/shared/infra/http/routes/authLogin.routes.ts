@@ -3,7 +3,7 @@ import { authLoginController } from '@/features/auth/login';
 
 const router = Router();
 
-router.post('/auth/login', async (req, res) => {
+router.post('/auth/token', async (req, res) => {
   const response = await authLoginController.handle(req.body);
   return res.status(response.statusCode).json(response.body);
 });

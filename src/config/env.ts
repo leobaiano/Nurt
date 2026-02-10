@@ -40,10 +40,10 @@ const envSchema = z.object({
     .optional(),
 
   AUTH_STRATEGY: z.enum(['api-token', 'jwt']).default('api-token'),
-  JWT_SECRET: z.string().optional(),
+  JWT_SECRET: z.string().min(10),
   JWT_EXPIRES_IN: z.string().default('1d'),
-  ADMIN_USERNAME: z.string().default('admin'),
-  ADMIN_PASSWORD: z.string().default('nurt123'),
+  CLIENT_ID: z.string().default('nurt_client'),
+  CLIENT_SECRET: z.string().default('nurt_secret_key'),
 
   /**
    * 🔐 Send Email
@@ -90,6 +90,6 @@ export const env = {
   authStrategy: parsedEnv.data.AUTH_STRATEGY,
   jwtSecret: parsedEnv.data.JWT_SECRET,
   jwtExpiresIn: parsedEnv.data.JWT_EXPIRES_IN,
-  adminUserName: parsedEnv.data.ADMIN_USERNAME,
-  adminPassword: parsedEnv.data.ADMIN_PASSWORD
+  clientId: parsedEnv.data.CLIENT_ID,
+  clientSecret: parsedEnv.data.CLIENT_SECRET
 } as const;

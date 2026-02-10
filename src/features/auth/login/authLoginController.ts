@@ -10,8 +10,9 @@ export class AuthLoginController {
   async handle(body: any) {
     return this.http.handle(async () => {
       const result = await this.useCase.execute({
-        username: body.username,
-        password: body.password,
+        clientId: body.client_id,
+        clientSecret: body.client_secret,
+        grantType: body.grant_type,
       });
 
       return {
