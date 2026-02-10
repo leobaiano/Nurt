@@ -41,7 +41,7 @@ const envSchema = z.object({
 
   AUTH_STRATEGY: z.enum(['api-token', 'jwt']).default('api-token'),
   JWT_SECRET: z.string().min(10),
-  JWT_EXPIRES_IN: z.string().default('1d'),
+  JWT_EXPIRES_IN: z.string().default('1h'),
   CLIENT_ID: z.string().default('nurt_client'),
   CLIENT_SECRET: z.string().default('nurt_secret_key'),
 
