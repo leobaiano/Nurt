@@ -20,7 +20,7 @@ export const createLeadSchema = z.object({
     .array(z.string().trim(), { message: 'Source is required' })
     .min(1, { message: 'Source must be a non-empty array' }),
 
-  custom: z.record(z.string(), z.array(z.string())).optional(),
+  custom: z.array(z.string().trim()).optional(),
 });
 
 export type CreateLeadDTO = z.infer<typeof createLeadSchema>;
