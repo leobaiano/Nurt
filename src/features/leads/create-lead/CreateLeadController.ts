@@ -1,6 +1,6 @@
 import { HttpController } from '../../../shared/infra/http/HttpController';
 import { CreateLeadUseCase } from './CreateLeadUseCase';
-import { CreateLeadDTO } from './CreateLeadDTO';
+import { createLeadSchema } from './CreateLeadSchema';
 
 export class CreateLeadController {
   constructor(
@@ -10,38 +10,26 @@ export class CreateLeadController {
 
   async handle(body: unknown) {
     return this.http.handle(async () => {
-      const input = body as Partial<CreateLeadDTO>;
-      const errors: { property: string; message: string }[] = [];
+      // 1. Validação estrutural e de formato rigorosa via Zod
+      const parseResult = createLeadSchema.safeParse(body);
 
-      if (!input.name) {
-        errors.push({ property: 'name', message: 'Name is required' });
-      }
+      if (!parseResult.success) {
+        // Mapeia os erros do Zod para o seu contrato de resposta de validação
+        const fields = parseResult.error.issues.map((issue) => ({
+          property: issue.path.join('.'),
+          message: issue.message,
+        }));
 
-      if (!input.email) {
-        errors.push({ property: 'email', message: 'Email is required' });
-      }
-
-      if (!input.phone) {
-        errors.push({ property: 'phone', message: 'Phone is required' });
-      }
-
-      if (!Array.isArray(input.source) || input.source.length === 0) {
-        errors.push({
-          property: 'source',
-          message: 'Source must be a non-empty array',
-        });
-      }
-
-      if (errors.length > 0) {
         return {
           type: 'validation_error',
           code: 'VALIDATION_ERROR',
           message: 'Invalid request data',
-          fields: errors,
+          fields,
         };
       }
 
-      const result = await this.useCase.execute(input as CreateLeadDTO);
+      // 2. parseResult.data é o DTO higienizado (trimmed, email em lowercase, etc.)
+      const result = await this.useCase.execute(parseResult.data);
 
       return {
         type: 'success',

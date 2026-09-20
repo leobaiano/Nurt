@@ -16,7 +16,7 @@ export class Lead {
   }) {
     this.id = props.id;
     this.name = props.name;
-    this.email = props.email;
+    this.email = props.email.trim().toLowerCase();
     this.phone = props.phone;
     this.source = props.source;
     this.custom = props.custom;
